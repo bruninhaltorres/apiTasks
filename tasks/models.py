@@ -18,7 +18,7 @@ class Task(models.Model):
 class Usuario(models.Model):
 
     nome = models.CharField(max_length=30, blank=False, null=False)
-    cpf = models.CharField(max_length=11, unique=True, blank=False, null=False)
+    cpf = models.CharField(max_length=11, unique=True)
     email = models.EmailField(max_length=100, unique=True, blank=False, null=False)
 
     def __str__(self):
