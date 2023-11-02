@@ -4,16 +4,11 @@ from tasks.models import Task, Usuario, Registro
 from tasks.validators import *
 
 class TaskSerializer(serializers.ModelSerializer):
-    
-    # Exibe o texto completo armazenado em prioridade e não apenas o primeiro caracter:
-    prioridade = serializers.SerializerMethodField()
 
     class Meta:
         model = Task
         fields = ['id', 'titulo', 'prioridade', 'descricao', 'data_criacao']
 
-    def get_prioridade(self, obj):
-        return obj.get_prioridade_display()
 
 class UsuarioSerializer(serializers.ModelSerializer):
 
@@ -37,4 +32,9 @@ class RegistroSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Registro
-        fields = ['id', 'task', 'task_titulo', 'usuario', 'usuario_nome', 'data_limite']
+        fields = ['id', 'task', 'task_titulo', 'usuario', 'usuario_nome', 'data_inicio', 'data_limite']
+
+    def validate(self, data):
+        if not datas_validas(data['data_inicio'], data['data_limite']):
+            raise serializers.ValidationError("A data limite deve ser maior que a data de início e ambas devem ser maiores ou igual a data atual. Selecione datas válidas seguindo essa regra.")
+        return data

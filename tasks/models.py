@@ -29,4 +29,5 @@ class Registro(models.Model):
     
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     task = models.ForeignKey(Task, on_delete=models.CASCADE)
+    data_inicio = models.DateField()
     data_limite = models.DateField()
