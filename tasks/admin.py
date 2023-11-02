@@ -1,5 +1,5 @@
 from django.contrib import admin
-from tasks.models import Task, Usuario, Registro
+from tasks.models import Task, SuperUsuario, NormalUsuario, AdminUsuario, Registro
 
 class Tasks(admin.ModelAdmin):
     list_display = ('id', 'titulo', 'prioridade', 'descricao', 'data_criacao')
@@ -8,13 +8,11 @@ class Tasks(admin.ModelAdmin):
     list_per_page = 20
 admin.site.register(Task, Tasks)
 
-class Usuarios(admin.ModelAdmin):
-    list_display = ('id', 'nome', 'cpf', 'email')
-    list_display_links = ('id', 'nome')
-    search_fields = ('nome',)
-admin.site.register(Usuario, Usuarios)
-
 class Registros(admin.ModelAdmin):
     list_display = ('id', 'usuario', 'task', 'data_limite')
     list_display_links = ('id',)
 admin.site.register(Registro, Registros)
+
+admin.site.register(SuperUsuario)
+admin.site.register(NormalUsuario)
+admin.site.register(AdminUsuario)

@@ -1,9 +1,9 @@
-from tasks.models import Task, Usuario, Registro
-from tasks.serializer import TaskSerializer, UsuarioSerializer, RegistroSerializer
-from rest_framework import viewsets
+from tasks.models import Task, SuperUsuario, AdminUsuario, NormalUsuario, Registro
+from tasks.serializer import TaskSerializer, CreateSuperUsuarioSerializer, RegistroSerializer
+from rest_framework import viewsets, generics
 
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
-
+from rest_framework.response import Response
 
 class TasksViewSet(viewsets.ModelViewSet):
     queryset = Task.objects.all()
@@ -11,11 +11,18 @@ class TasksViewSet(viewsets.ModelViewSet):
 
     permission_classes = [IsAuthenticatedOrReadOnly]
 
-class UsuariosViewSet(viewsets.ModelViewSet):
-    queryset = Usuario.objects.all()
-    serializer_class = UsuarioSerializer
+class CreateSuperUsuarioView(generics.GenericAPIView):
+    # queryset = Task.objects.all()
+    serializer_class = CreateSuperUsuarioSerializer
 
-    permission_classes = [IsAuthenticated]
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data = request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({
+            "message":"account created successfully"
+        })
+
 
 class RegistrosViewSet(viewsets.ModelViewSet):
     queryset = Registro.objects.all()

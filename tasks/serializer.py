@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from tasks.models import Task, Usuario, Registro
+from tasks.models import Task, SuperUsuario, NormalUsuario, AdminUsuario, Registro
 
 from tasks.validators import *
 
@@ -8,23 +8,6 @@ class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
         fields = ['id', 'titulo', 'prioridade', 'descricao', 'data_criacao']
-
-class UsuarioSerializer(serializers.ModelSerializer):
-
-    is_superuser = serializers.BooleanField(label="Administrador")
-
-    class Meta:
-        model = Usuario
-        fields =['id', 'nome', 'cpf', 'email', 'username', 'password', 'is_superuser', 'is_staff']
-
-    def validate(self, data):
-        if not cpf_valido(data['cpf']):
-            raise serializers.ValidationError({'cpf': "Número de CPF inválido"})
-        if not nome_valido(data['nome']):
-            raise serializers.ValidationError({'nome': "Não inclua números nesse campo"})
-
-        return data
-
 
 class RegistroSerializer(serializers.ModelSerializer):
 
@@ -39,3 +22,40 @@ class RegistroSerializer(serializers.ModelSerializer):
         if not datas_validas(data['data_inicio'], data['data_limite']):
             raise serializers.ValidationError("A data limite deve ser maior que a data de início e ambas devem ser maiores ou igual a data atual. Selecione datas válidas seguindo essa regra.")
         return data
+    
+class SuperUsuarioSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = SuperUsuario
+        fields =['nome', 'cpf', 'email', 'username', 'password', 'is_staff']
+
+    def validate(self, data):
+        if not cpf_valido(data['cpf']):
+            raise serializers.ValidationError({'cpf': "Número de CPF inválido"})
+        if not nome_valido(data['nome']):
+            raise serializers.ValidationError({'nome': "Não inclua números nesse campo"})
+
+        return data
+    
+class CreateSuperUsuarioSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SuperUsuario
+        fields = ['nome', 'cpf', 'email', 'username', 'password', 'is_staff']
+    
+    def save(self, **kwargs):
+        user = SuperUsuario (
+            nome=self.validated_data['nome'],
+            cpf=self.validated_data['cpf'],
+            email=self.validated_data['email'],
+            username=self.validated_data['username'],
+        )
+        is_staff=self.validated_data['is_staff']
+        password=self.validated_data['password']
+        user.set_password(password)
+        if is_staff:
+            user.save()
+            AdminUsuario.objects.create(user = user)
+        if not is_staff:
+            user.save()
+            NormalUsuario.objects.create(user = user)
+        return 
