@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 
 class Task(models.Model):
 
@@ -14,12 +15,16 @@ class Task(models.Model):
 
     def __str__(self):
         return self.titulo
-
-class Usuario(models.Model):
+    
+class Usuario(AbstractUser):
 
     nome = models.CharField(max_length=30, blank=False, null=False)
     cpf = models.CharField(max_length=11, unique=True)
     email = models.EmailField(max_length=100, unique=True, blank=False, null=False)
+
+    # Adicione related_name para evitar conflitos
+    groups = models.ManyToManyField('auth.Group', related_name='usuarios')
+    user_permissions = models.ManyToManyField('auth.Permission', related_name='usuarios')
 
     def __str__(self):
         """Cada usuario sera representado pelo nome"""

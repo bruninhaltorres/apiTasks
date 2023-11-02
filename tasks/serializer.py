@@ -9,12 +9,13 @@ class TaskSerializer(serializers.ModelSerializer):
         model = Task
         fields = ['id', 'titulo', 'prioridade', 'descricao', 'data_criacao']
 
-
 class UsuarioSerializer(serializers.ModelSerializer):
+
+    is_superuser = serializers.BooleanField(label="Administrador")
 
     class Meta:
         model = Usuario
-        fields = '__all__'
+        fields =['id', 'nome', 'cpf', 'email', 'username', 'password', 'is_superuser', 'is_staff']
 
     def validate(self, data):
         if not cpf_valido(data['cpf']):

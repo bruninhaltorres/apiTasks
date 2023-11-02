@@ -1,5 +1,4 @@
 from validate_docbr import CPF
-
 from datetime import datetime
 
 def cpf_valido(numero_cpf):
