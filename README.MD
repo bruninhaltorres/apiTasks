@@ -48,7 +48,7 @@ Desafio Técnico: Back-end Python (Mesha Tecnologia)
 Build e construção de containers:
 
     docker build -t api-tasks .
-    docker run 
+    docker run -p 8000:8000 api-tasks
 
 ## Especificações
 
