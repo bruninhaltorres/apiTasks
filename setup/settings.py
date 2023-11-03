@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'tasks', 
     'rest_framework',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -102,6 +103,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 AUTH_USER_MODEL="tasks.SuperUsuario"
+
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
