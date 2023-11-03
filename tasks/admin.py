@@ -1,5 +1,5 @@
 from django.contrib import admin
-from tasks.models import Task, SuperUsuario, NormalUsuario, AdminUsuario, Registro
+from tasks.models import Task, SuperUsuario, Registro
 
 class Tasks(admin.ModelAdmin):
     list_display = ('id', 'titulo', 'prioridade', 'descricao', 'data_criacao')
@@ -14,5 +14,3 @@ class Registros(admin.ModelAdmin):
 admin.site.register(Registro, Registros)
 
 admin.site.register(SuperUsuario)
-admin.site.register(NormalUsuario)
-admin.site.register(AdminUsuario)

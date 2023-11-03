@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from tasks.models import Task, SuperUsuario, NormalUsuario, AdminUsuario, Registro
+from tasks.models import Task, SuperUsuario, Registro
 
 from tasks.validators import *
 
@@ -27,7 +27,7 @@ class SuperUsuarioSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SuperUsuario
-        fields =['nome', 'cpf', 'email', 'username', 'password', 'is_staff']
+        fields =['id', 'nome', 'cpf', 'email', 'username', 'password', 'is_admin', 'is_superuser']
 
     def validate(self, data):
         if not cpf_valido(data['cpf']):
@@ -37,25 +37,16 @@ class SuperUsuarioSerializer(serializers.ModelSerializer):
 
         return data
     
-class CreateSuperUsuarioSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = SuperUsuario
-        fields = ['nome', 'cpf', 'email', 'username', 'password', 'is_staff']
-    
     def save(self, **kwargs):
-        user = SuperUsuario (
+        new_user = SuperUsuario (
             nome=self.validated_data['nome'],
             cpf=self.validated_data['cpf'],
             email=self.validated_data['email'],
             username=self.validated_data['username'],
+            is_admin=self.validated_data['is_admin'],
+            is_superuser=self.validated_data['is_superuser'],
         )
-        is_staff=self.validated_data['is_staff']
         password=self.validated_data['password']
-        user.set_password(password)
-        if is_staff:
-            user.save()
-            AdminUsuario.objects.create(user = user)
-        if not is_staff:
-            user.save()
-            NormalUsuario.objects.create(user = user)
-        return 
+        new_user.set_password(password)
+        new_user.save()
+        return    
