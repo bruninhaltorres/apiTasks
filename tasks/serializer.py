@@ -27,7 +27,7 @@ class SuperUsuarioSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SuperUsuario
-        fields =['id', 'nome', 'cpf', 'email', 'username', 'password', 'is_admin', 'is_superuser']
+        fields =['id', 'nome', 'cpf', 'email', 'username', 'password', 'is_admin']
 
     def validate(self, data):
         if not cpf_valido(data['cpf']):
@@ -43,8 +43,7 @@ class SuperUsuarioSerializer(serializers.ModelSerializer):
             cpf=self.validated_data['cpf'],
             email=self.validated_data['email'],
             username=self.validated_data['username'],
-            is_admin=self.validated_data['is_admin'],
-            is_superuser=self.validated_data['is_superuser'],
+            is_admin=self.validated_data['is_admin']
         )
         password=self.validated_data['password']
         new_user.set_password(password)

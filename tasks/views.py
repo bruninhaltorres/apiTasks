@@ -1,13 +1,13 @@
+from rest_framework import viewsets
+
 from tasks.models import Task, SuperUsuario, Registro
 from tasks.permissions import *
 from tasks.serializer import TaskSerializer, SuperUsuarioSerializer, RegistroSerializer
-from rest_framework import viewsets, generics
 
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
-from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 
 class TasksViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticated&IsReadOnly]
 
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
