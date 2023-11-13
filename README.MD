@@ -1,5 +1,4 @@
 # API - Gerenciador de Tarefas
-Desafio Técnico: Back-end Python (Mesha Tecnologia)
 
 ## Tecnologias utilizadas:
 
